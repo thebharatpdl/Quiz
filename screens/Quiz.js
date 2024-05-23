@@ -4,9 +4,11 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 const Quiz = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const getQuiz = async () => {
-    const url = 'https://opentdb.com/api.php?amount=10&type=multiple';
+    const url = 'https://opentdb.com/api.php?amount=10&category=18&difficulty=medium&type=multiple&encode=url3986';
     const res = await fetch(url);
     const data = await res.json();
     setQuestions(data.results);
@@ -27,38 +29,53 @@ const Quiz = ({ navigation }) => {
   ].sort();
 
   const handleNext = () => {
+    if (selectedOption === currentQuestion.correct_answer) {
+      setScore(score + 1);
+    }
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedOption(null);
     }
   };
 
-  const handleSkip = () => {
-    handleNext();
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
   };
 
   const handleShowResult = () => {
-    // Navigate to a result screen or handle the result display logic
-    navigation.navigate('ResultScreen'); // Example navigation to a result screen
+    if (selectedOption === currentQuestion.correct_answer) {
+      setScore(score + 1);
+    }
+    navigation.navigate('Result', { score });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.question}>Q. {currentQuestion.question}</Text>
+        <Text style={styles.question}>Q. {decodeURIComponent(currentQuestion.question)}</Text>
       </View>
       <View style={styles.option}>
         {options.map((option, index) => (
-          <TouchableOpacity key={index} style={styles.optionButton}>
-            <Text style={styles.optionText}>{option}</Text>
+          <TouchableOpacity 
+            key={index} 
+            style={[
+              styles.optionButton,
+              selectedOption === option && styles.selectedOptionButton
+            ]}
+            onPress={() => setSelectedOption(option)}
+          >
+            <Text style={styles.optionText}>{decodeURIComponent(option)}</Text>
           </TouchableOpacity>
         ))}
       </View>
       <View style={styles.bottom}>
         <TouchableOpacity
           style={styles.button}
-          onPress={handleSkip}
+          onPress={handlePrevious}
         >
-          <Text style={styles.buttonText}>SKIP</Text>
+          <Text style={styles.buttonText}>PREVIOUS</Text>
         </TouchableOpacity>
         {currentQuestionIndex < questions.length - 1 ? (
           <TouchableOpacity
@@ -127,5 +144,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#219ebc',
     paddingHorizontal: 12,
     borderRadius: 15,
+  },
+  selectedOptionButton: {
+    backgroundColor: '#8ecae6',
   },
 });

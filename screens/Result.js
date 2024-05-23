@@ -3,22 +3,28 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 
 const logoImg = require('./img1.png');
 
-const Result = ({ navigation }) => {
+const Result = ({ navigation, route }) => {
+  const { score } = route.params;
+
   return (
-    <View>
+    <View style={styles.container}>
       <View>
-        <Text>Result</Text>
+        <Text style={styles.headerText}>Result</Text>
       </View>
+      <Text style={styles.scoreText}>Your Score: {score}</Text>
       <View style={styles.bannerContainer}>
-        <Image 
+        {/* <Image 
           source={logoImg}
           style={styles.banner}
           resizeMode="contain"
-        />
+        /> */}
       </View>
-      <View>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Text>Home</Text>
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('Home')}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Home</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -28,6 +34,23 @@ const Result = ({ navigation }) => {
 export default Result;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  headerText: {
+    fontSize: 30,
+    textAlign: 'center',
+    marginVertical: 20,
+    fontWeight: 'bold',
+  },
+  scoreText: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginVertical: 10,
+    marginVertical:100,
+  },
   banner: {
     height: 300,
     width: 300,
@@ -35,5 +58,23 @@ const styles = StyleSheet.create({
   bannerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
+  },
+  bottomContainer: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  button: {
+    width: '50%',
+    backgroundColor: '#3a86ff',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });

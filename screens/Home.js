@@ -51,11 +51,12 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     marginTop: 20,
-    marginBottom:'30',
+    marginBottom: 30,
   },
   buttonText: {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
+    
   },
 });
