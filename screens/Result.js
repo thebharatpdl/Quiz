@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 30,
     textAlign: 'center',
-    marginVertical: 20,
+    marginVertical: 21,
     fontWeight: 'bold',
   },
   scoreText: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 32,
   },
   buttonText: {
     color: '#fff',
